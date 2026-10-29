@@ -30,15 +30,15 @@ button,select,input{font:inherit}button{border:0;border-radius:10px;padding:12px
 <div class="layout">
 <section class="card">
 <h2>🎰 Хардкорная рулетка</h2>
-<div class="wheelbox"><div class="door"><div class="eye">👁️</div></div><div id="status">Готов к испытанию? Рулетка выберет 3–5 модификаторов.</div></div>
-<div class="field"><label for="count">Сколько модификаторов</label><select id="count"><option value="3">3 — сложно</option><option value="4">4 — очень сложно</option><option value="5" selected>5 — ХАРДКОР</option></select></div>
+<div class="wheelbox"><div class="door"><div class="eye">👁️</div></div><div id="status">Готов к испытанию? Выбери от 1 до 13 модификаторов.</div></div>
+<div class="field"><label for="count">Сколько модификаторов выпадет</label><select id="count"><option value="1">1 модификаторов</option><option value="2">2 модификатора</option><option value="3">3 модификатора</option><option value="4">4 модификатора</option><option value="5" selected>5 модификаторов</option><option value="6">6 модификаторов</option><option value="7">7 модификаторов</option><option value="8">8 модификаторов</option><option value="9">9 модификаторов</option><option value="10">10 модификаторов</option><option value="11">11 модификаторов</option><option value="12">12 модификаторов</option><option value="13">13 модификаторов</option></select></div>
 <div class="field"><label for="base">Базовые Knobs за забег</label><input id="base" type="number" min="0" value="100"></div>
 <button class="primary" id="spin">🎲 КРУТИТЬ РУЛЕТКУ</button>
 <div class="stats"><div class="stat"><span>Модификаторы</span><b id="totalMods">0</b></div><div class="stat"><span>Бонус к Knobs</span><b id="totalPct" class="bonus">0%</b></div><div class="stat"><span>ИТОГО Knobs*</span><b id="totalKnobs">100</b></div></div>
 <div style="margin-top:12px;color:var(--muted);font-size:11px">*Оценка по введённой базовой награде. В игре есть ограничения и условия разблокировки.</div>
 </section>
 <section class="card">
-<h2>🚪 Выпавшие модификаторы</h2><div id="results" class="resultlist"><div class="mod"><strong>Здесь появится твой вызов</strong><p>Нажми кнопку рулетки, чтобы получить 3–5 случайных модификаторов.</p></div></div>
+<h2>🚪 Выпавшие модификаторы</h2><div id="results" class="resultlist"><div class="mod"><strong>Здесь появится твой вызов</strong><p>Нажми кнопку рулетки, чтобы получить от 1 до 13 случайных модификаторов.</p></div></div>
 <button class="secondary" id="again" style="width:100%;margin-top:12px" disabled>↻ ПОВТОРИТЬ</button>
 </section>
 </div>
@@ -46,7 +46,7 @@ button,select,input{font:inherit}button{border:0;border-radius:10px;padding:12px
 <h2>📚 Каталог модификаторов</h2><p style="color:var(--muted);font-size:13px;margin-top:-4px">Ищи модификатор по названию, читай описание и смотри, как он влияет на награду.</p>
 <div class="tools"><input id="search" placeholder="Поиск модификатора…"><select id="category"><option value="">Все категории</option></select></div>
 <div id="catalog" class="cataloggrid"></div>
-<div class="foot">Фанатский справочник, неофициальный сайт Roblox/DOORS. Доступность, проценты и условия могут меняться после обновлений игры. Несовместимые модификаторы в рулетке стараемся не выбирать одновременно. Данные сверялись с сообществом DOORS Wiki (обновление списка: октябрь 2026).</div>
+<div class="foot">Фанатский справочник, неофициальный сайт Roblox/DOORS. Доступность, проценты и условия могут меняться после обновлений игры. Несовместимые модификаторы в рулетке стараемся не выбирать одновременно. Каталог содержит игровые и дополнительные фанатские варианты; проценты ориентировочные и не гарантируют точные значения в игре.</div>
 </section>
 </main>
 <script>
@@ -137,6 +137,62 @@ const data = [
 ["El Goblino's Payday (Classic)","Золото","Золото не появляется.",15,"gold"],
 ["Survive the Drakobloxxers","Особые","Особый режим/модификатор; награды могут быть отключены.",-999,"special"],
 ["Survive the Jeff the Killer","Особые","Особый режим/модификатор; награды могут быть отключены.",-999,"special"]
+
+,["A-90, Here I Come","The Rooms","A-90 может появляться чаще.",10,"roomsentity"]
+,["A-120, Here I Come","The Rooms","A-120 может появляться чаще.",10,"roomsentity"]
+,["A-60, Here I Come","The Rooms","A-60 может появляться чаще.",10,"roomsentity"]
+,["More Ambush","Ambush","Увеличивает вероятность появления Ambush.",5,"ambush"]
+,["Even More Ambush","Ambush","Заметно увеличивает вероятность появления Ambush.",10,"ambush"]
+,["Less Hiding","Укрытия","Укрытия встречаются реже.",10,"hide"]
+,["No Hiding","Укрытия","Укрытия практически недоступны; испытание становится крайне опасным.",20,"hide"]
+,["More Dupe","Dupe","Увеличивает вероятность появления Dupe.",5,"dupe"]
+,["Dupe Everywhere","Dupe","Dupe может появляться намного чаще.",15,"dupe"]
+,["More Eyes","Eyes","Повышает вероятность появления Eyes.",5,"eyes"]
+,["Eyes Everywhere","Eyes","Eyes может появляться значительно чаще.",15,"eyes"]
+,["Seek And Destroy","Seek","Seek становится опаснее во время погони.",10,"seek"]
+,["Faster Seek","Seek","Погоня Seek проходит быстрее.",5,"seek"]
+,["Longer Chase","Seek","Погоня Seek длится дольше.",5,"seek"]
+,["More Rush","Rush","Повышает вероятность появления Rush.",5,"rush"]
+,["More Halt","Halt","Повышает вероятность появления Halt.",5,"halt"]
+,["More Screech","Сущности","Screech появляется чаще в тёмных комнатах.",5,"entityrate"]
+,["More Snare","Опасности","Snare появляется чаще.",5,"hazard"]
+,["Snare Trouble","Опасности","Опасные ловушки встречаются чаще.",10,"hazard"]
+,["Darkness Falls","Освещение","Тёмные комнаты встречаются чаще.",10,"lighting"]
+,["Extra Dark","Освещение","Значительно увеличивает количество тёмных комнат.",15,"lighting"]
+,["Less Gold","Золото","Снижает количество найденного золота.",5,"gold"]
+,["No Gold","Золото","Золота почти невозможно найти.",15,"gold"]
+,["More Batteries","Предметы","Батарейки встречаются чаще.",-5,"items"]
+,["Fewer Batteries","Предметы","Батарейки встречаются реже.",5,"items"]
+,["More Lockpicks","Предметы","Отмычки встречаются чаще.",-5,"items"]
+,["Fewer Lockpicks","Предметы","Отмычки встречаются реже.",5,"items"]
+,["More Vitamins","Предметы","Витамины встречаются чаще.",-5,"items"]
+,["Fewer Vitamins","Предметы","Витамины встречаются реже.",5,"items"]
+,["More Lighters","Предметы","Зажигалки встречаются чаще.",-5,"items"]
+,["Fewer Lighters","Предметы","Зажигалки встречаются реже.",5,"items"]
+,["More Flashlights","Предметы","Фонарики встречаются чаще.",-5,"items"]
+,["Fewer Flashlights","Предметы","Фонарики встречаются реже.",5,"items"]
+,["More Crucifixes","Предметы","Кресты встречаются чаще.",-10,"items"]
+,["Fewer Crucifixes","Предметы","Кресты встречаются реже.",5,"items"]
+,["No Guidance","Guiding Light","Подсказки Guiding Light сведены к минимуму.",10,"guiding"]
+,["Dim Guidance","Guiding Light","Подсказки Guiding Light менее заметны.",5,"guiding"]
+,["Faster Entities","Сущности","Некоторые сущности двигаются быстрее.",10,"entityrate"]
+,["Quiet Entities","Звук","Звуковые подсказки сущностей менее заметны.",10,"audio"]
+,["No Sound","Звук","Звуковые предупреждения сильно ограничены.",15,"audio"]
+,["Low Health Start","Здоровье","Начинаешь забег с малым запасом здоровья.",10,"health"]
+,["Fast Feet","Скорость","Передвижение ускорено.",-10,"speed"]
+,["Slow Feet","Скорость","Передвижение замедлено.",10,"speed"]
+,["Extra Locked Doors","Запертые комнаты","Чаще попадаются запертые двери.",5,"locked"]
+,["Key Hunt","Запертые комнаты","Чаще приходится искать ключи.",10,"locked"]
+,["More Rooms, More Trouble","Комнаты","Комнаты содержат больше потенциальных опасностей.",10,"rooms"]
+,["Unexpected Guests","Сущности","Опасные встречи происходят чаще.",10,"entityrate"]
+,["Flickering Lights","Освещение","Освещение чаще мигает.",5,"lighting"]
+,["Quick Decisions","Сущности","На реакцию во время опасных событий остаётся меньше времени.",10,"entityrate"]
+,["Extra Long Run","Комнаты","Испытание становится длиннее и утомительнее.",10,"rooms"]
+,["Bad Luck","Случайные","Случайные неблагоприятные условия могут осложнить забег.",10,"random"]
+,["Unlucky Day","Случайные","Несколько неблагоприятных эффектов усиливают испытание.",15,"random"]
+,["Extra Challenge","Особые","Дополнительное фанатское испытание для разнообразия забега.",5,"special"]
+,["Nightmare Mode","Особые","Фанатский модификатор, сильно усложняющий прохождение.",20,"special"]
+,["Maximum Pressure","Особые","Фанатский вариант с несколькими неблагоприятными условиями.",25,"special"]
 ];
 const groups = {
 lighting:["Electrical Work","Bad Electrical Work","Power Shortage","Lights Out"],
