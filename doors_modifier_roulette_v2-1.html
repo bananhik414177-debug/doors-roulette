@@ -1,0 +1,239 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#100d12">
+<title>DOORS — Modifier Roulette</title>
+<style>
+:root{--bg:#100d12;--panel:#1b171e;--panel2:#241d25;--red:#d43a42;--gold:#e7b85c;--text:#f5f0e8;--muted:#b7aeb8;--green:#80d99b}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at top,#39202a 0,#100d12 52%);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+header{padding:28px 16px 20px;text-align:center;border-bottom:1px solid #4a3038;background:linear-gradient(#180f16dd,#100d12aa)}
+.eyebrow{color:var(--gold);letter-spacing:4px;font-size:12px;font-weight:800}h1{margin:8px 0;font-size:clamp(28px,6vw,50px);letter-spacing:2px;text-shadow:0 0 22px #d43a4266}header p{color:var(--muted);margin:0}
+main{width:min(1100px,100%);margin:auto;padding:18px 14px 40px}.layout{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.card{background:linear-gradient(145deg,#211b23,#171319);border:1px solid #49323b;border-radius:16px;padding:18px;box-shadow:0 12px 32px #0005}
+h2{font-size:18px;margin:0 0 12px;color:var(--gold)}.wheelbox{display:flex;flex-direction:column;align-items:center;text-align:center;min-height:260px;justify-content:center}
+.door{width:142px;height:180px;border:5px solid #8e6b46;border-radius:70px 70px 8px 8px;background:radial-gradient(ellipse at 50% 40%,#542c36,#170f16 70%);display:grid;place-items:center;box-shadow:inset 0 0 25px #000,0 0 35px #c23b4633;position:relative}
+.door:before{content:"";position:absolute;inset:10px;border:1px solid #76533c;border-radius:60px 60px 4px 4px}.eye{font-size:46px;z-index:1;filter:drop-shadow(0 0 9px #e34b51)}
+button,select,input{font:inherit}button{border:0;border-radius:10px;padding:12px 16px;font-weight:800;cursor:pointer;transition:transform .15s,filter .15s}button:hover{filter:brightness(1.12);transform:translateY(-1px)}button:disabled{opacity:.55;cursor:wait;transform:none}.primary{background:linear-gradient(135deg,#e54a4f,#9d202d);color:white;width:100%;margin-top:16px;box-shadow:0 6px 18px #d43a4233}.secondary{background:#3a2c36;color:var(--text);border:1px solid #684651}.small{padding:7px 10px;font-size:13px}
+#status{color:var(--muted);margin-top:12px;min-height:24px}.resultlist{display:grid;gap:8px}.mod{background:#251e27;border:1px solid #45313b;border-radius:10px;padding:11px 12px}.modtop{display:flex;gap:8px;justify-content:space-between;align-items:flex-start}.mod strong{font-size:14px}.pct{white-space:nowrap;font-weight:900;color:var(--green)}.pct.negative{color:#ff9c91}.mod p{margin:6px 0 0;color:#c6bdc6;font-size:13px;line-height:1.4}.tag{font-size:10px;color:var(--gold);text-transform:uppercase;letter-spacing:1px;margin-top:5px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px}.stat{background:#120f14;border:1px solid #3e2c35;border-radius:10px;padding:12px;text-align:center}.stat span{display:block;color:var(--muted);font-size:11px}.stat b{display:block;font-size:23px;margin-top:3px}.bonus{color:var(--green)}.penalty{color:#ff9c91}
+.field{display:flex;gap:8px;align-items:center;margin:10px 0}.field label{color:var(--muted);font-size:13px;flex:1}.field input,.field select{width:130px;max-width:48%;background:#100d12;border:1px solid #59404a;color:white;border-radius:8px;padding:9px}
+.tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.tools input,.tools select{background:#100d12;border:1px solid #59404a;color:white;border-radius:8px;padding:10px;min-width:0;flex:1}
+.catalog{margin-top:16px}.cataloggrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;max-height:520px;overflow:auto;padding-right:4px}.catalog .mod{padding:10px}.foot{color:#938893;font-size:12px;line-height:1.5;margin-top:16px}.badge{display:inline-block;border:1px solid #5d454e;border-radius:99px;padding:3px 8px;color:#cfc2cb;font-size:11px;margin:3px 4px 0 0}
+@media(max-width:720px){.layout{grid-template-columns:1fr}.cataloggrid{grid-template-columns:1fr}.card{padding:14px}.door{width:120px;height:150px}}
+</style>
+</head>
+<body>
+<header><div class="eyebrow">ROBLOX • HORROR CHALLENGE</div><h1>DOORS MODIFIER ROULETTE</h1><p>Выживи в отеле. Прими случайный вызов. Забери свои Knobs.</p></header>
+<main>
+<div class="layout">
+<section class="card">
+<h2>🎰 Хардкорная рулетка</h2>
+<div class="wheelbox"><div class="door"><div class="eye">👁️</div></div><div id="status">Готов к испытанию? Выбери от 1 до 13 модификаторов.</div></div>
+<div class="field"><label for="count">Сколько модификаторов выпадет</label><select id="count"><option value="1">1 модификаторов</option><option value="2">2 модификатора</option><option value="3">3 модификатора</option><option value="4">4 модификатора</option><option value="5" selected>5 модификаторов</option><option value="6">6 модификаторов</option><option value="7">7 модификаторов</option><option value="8">8 модификаторов</option><option value="9">9 модификаторов</option><option value="10">10 модификаторов</option><option value="11">11 модификаторов</option><option value="12">12 модификаторов</option><option value="13">13 модификаторов</option></select></div>
+<div class="field"><label for="base">Базовые Knobs за забег</label><input id="base" type="number" min="0" value="100"></div>
+<button class="primary" id="spin">🎲 КРУТИТЬ РУЛЕТКУ</button>
+<div class="stats"><div class="stat"><span>Модификаторы</span><b id="totalMods">0</b></div><div class="stat"><span>Бонус к Knobs</span><b id="totalPct" class="bonus">0%</b></div><div class="stat"><span>ИТОГО Knobs*</span><b id="totalKnobs">100</b></div></div>
+<div style="margin-top:12px;color:var(--muted);font-size:11px">*Оценка по введённой базовой награде. В игре есть ограничения и условия разблокировки.</div>
+</section>
+<section class="card">
+<h2>🚪 Выпавшие модификаторы</h2><div id="results" class="resultlist"><div class="mod"><strong>Здесь появится твой вызов</strong><p>Нажми кнопку рулетки, чтобы получить от 1 до 13 случайных модификаторов.</p></div></div>
+<button class="secondary" id="again" style="width:100%;margin-top:12px" disabled>↻ ПОВТОРИТЬ</button>
+</section>
+</div>
+<section class="card catalog">
+<h2>📚 Каталог модификаторов</h2><p style="color:var(--muted);font-size:13px;margin-top:-4px">Ищи модификатор по названию, читай описание и смотри, как он влияет на награду.</p>
+<div class="tools"><input id="search" placeholder="Поиск модификатора…"><select id="category"><option value="">Все категории</option></select></div>
+<div id="catalog" class="cataloggrid"></div>
+<div class="foot">Фанатский справочник, неофициальный сайт Roblox/DOORS. Доступность, проценты и условия могут меняться после обновлений игры. Несовместимые модификаторы в рулетке стараемся не выбирать одновременно. Каталог содержит игровые и дополнительные фанатские варианты; проценты ориентировочные и не гарантируют точные значения в игре.</div>
+</section>
+</main>
+<script>
+const data = [
+["Uh Oh","Случайные","Активирует один случайный модификатор.",10,"random"],
+["How Unfortunate","Случайные","Активирует три случайных модификатора.",30,"random"],
+["Chaos, Chaos","Случайные","Активирует пять случайных модификаторов.",50,"random"],
+["Electrical Work","Освещение","Свет не мигает и не ломается; есть предупреждения о сущностях.",10,"lighting"],
+["Bad Electrical Work","Освещение","Больше тёмных комнат; свет иногда мигает и ломается.",10,"lighting"],
+["Power Shortage","Освещение","Большинство комнат тёмные даже во время атак; свет мигает и ломается.",15,"lighting"],
+["Lights Out","Освещение","Все комнаты полностью тёмные.",25,"lighting"],
+["Bad Ventilation","Освещение","Добавляет туман и сильно ограничивает видимость.",10,"fog"],
+["El Goblino Was Here","Золото","Золота можно найти меньше.",5,"gold"],
+["El Goblino's Payday","Золото","Золото не появляется.",15,"gold"],
+["More Stuff","Предметы","Предметы встречаются чаще.",-50,"items"],
+["Less Stuff","Предметы","Предметов можно найти меньше.",5,"items"],
+["Out Of Stuff","Предметы","Нельзя найти необязательные предметы и подборы.",15,"items"],
+["Wear And Tear","Предметы","У предметов значительно меньше прочности или использований.",5,"items"],
+["Small Hands","Предметы","Можно носить не более трёх необязательных предметов.",5,"items"],
+["Baby Hands","Предметы","Можно носить только один необязательный предмет.",10,"items"],
+["Gone Fishing","Guiding Light","Большинство светящихся подсказок отключено.",5,"guiding"],
+["Soundproofing","Guiding Light","Ключи, книги и похожие предметы больше не издают мерцающий звук.",5,"guiding"],
+["Wet Floor","Комнаты","Пол становится скользким.",10,"rooms"],
+["Smelt It","Опасности","Повышает вероятность появления Firedamp.",5,"hazard"],
+["Dealt It","Опасности","Сильно повышает вероятность появления Firedamp.",15,"hazard"],
+["Locked And Loaded","Запертые комнаты","Запертые комнаты встречаются чаще; обычные комнаты тоже могут быть закрыты.",10,"locked"],
+["Key Key Key Key","Запертые комнаты","Почти все комнаты заперты.",15,"locked"],
+["Nowhere To Hide","Укрытия","Укрытия больше не гарантированы каждому игроку.",10,"hide"],
+["Jammin'","Звук","Играет музыка, заглушая остальные звуки.",15,"audio"],
+["Tripped","Здоровье","Начинаешь с 50% здоровья; его можно восстановить.",5,"health"],
+["Tripped And Fell","Здоровье","Начинаешь с 10% здоровья; его можно восстановить.",10,"health"],
+["Last Few Breaths","Здоровье","Максимальное здоровье снижено до 50%.",10,"health"],
+["Last Breath","Здоровье","Любой смертельный урон сразу убивает.",20,"health"],
+["Didn't Skip Leg Day","Скорость","Скорость передвижения увеличена.",-50,"speed"],
+["Faster, Faster, Faster","Скорость","Скорость передвижения значительно увеличена.",-75,"speed"],
+["MAXIMUM OVERDRIVE","Скорость","Скорость передвижения невероятно высокая; награды отключены.",-999,"speed"],
+["My Knees Are Killing Me","Скорость","Приседание выполняется значительно медленнее.",5,"speed"],
+["My Legs Are Killing Me","Скорость","Скорость передвижения значительно снижена.",10,"speed"],
+["Injuries","Скорость","Недостающее здоровье также снижает скорость.",5,"speed"],
+["Good Time","Сущности","Большинство сущностей атакуют реже.",-50,"entityrate"],
+["Bad Time","Сущности","Большинство сущностей атакуют чаще.",10,"entityrate"],
+["Really Bad Time","Сущности","Большинство сущностей атакуют намного чаще.",20,"entityrate"],
+["Worst Time Ever","Сущности","Сущности атакуют постоянно и очень несправедливо.",25,"entityrate"],
+["Rush Hour","Rush","Rush атакует чаще.",10,"rush"],
+["I'm Runnin' Here","Rush","Rush передвигается быстрее.",10,"rush"],
+["I'm Tip-Toein' Here","Rush","Rush не издаёт звуков.",10,"rush"],
+["Rush Around","Rush","Rush может атаковать из двери впереди, а не только из предыдущей.",5,"rush"],
+["Wrong Number","Dupe","Dupe появляется чаще и становится сложнее.",5,"dupe"],
+["Battle Of Wits","Dupe","Dupe появляется почти всегда и имеет максимальную сложность.",15,"dupe"],
+["Nosey","Eyes","Eyes появляется чаще.",5,"eyes"],
+["Always Watching","Eyes","Eyes появляется всегда.",10,"eyes"],
+["Seeing Double","Eyes","Всегда появляются два Eyes.",15,"eyes"],
+["Four Eyes","Eyes","Всегда появляются четыре Eyes.",20,"eyes"],
+["Every Angle","Eyes","Eyes телепортируется по комнате.",5,"eyes"],
+["Come Back Here","Figure","Figure передвигается быстрее.",5,"figure"],
+["Haha","Giggle","Giggles могут появляться; в Mines их больше.",5,"giggle"],
+["Laughing Stock","Giggle","Giggles появляются повсюду.",10,"giggle"],
+["No Laughing Matter","Giggle","Giggles повсюду и не смеются.",15,"giggle"],
+["Dripped Out","Giggle","На Giggles больше не действуют источники света.",5,"giggle"],
+["Itchy","Timothy","Timothy атакует чаще; его укус может быть смертельным.",5,"timothy"],
+["Rent's Due","Hide","Hide атакует настолько быстро, насколько возможно.",15,"hideentity"],
+["New Roommate","Hide","Hide будет находиться в последнем использованном укрытии.",5,"hideentity"],
+["Make Haste","Backdoor","Появляются таймер и рычаги Backdoor; Haste атакует при нуле на таймере.",25,"backdoor"],
+["Room For More","The Rooms","Сущности из The Rooms получают шанс атаковать.",20,"roomsentity"],
+["Stop Right There","The Rooms","A-90 получает шанс атаковать.",15,"roomsentity"],
+["Look, Man","Backdoor","Lookman может появиться.",10,"backdoor"],
+["Vacuum Sealed","Backdoor","Некоторые двери ведут в никуда.",10,"backdoor"],
+["Blitz, Oh","Backdoor","Blitz из Backdoor может атаковать.",5,"backdoor"],
+["Voice Acting","Особые","Включает озвучку из первоапрельского обновления 2024 года.",-20,"special"],
+["RANDOM EVENTS","Особые","Включает случайные события; зрители могут влиять на них.",-50,"special"],
+["ADMIN PANEL","Особые","Позволяет создавать сущностей и предметы; прогресс и награды отключены.",-999,"special"],
+["CUSTOM SEED","Особые","Делает генерацию комнат и большинство событий предсказуемыми; прогресс ограничен.",-999,"special"],
+["Are Those Pancakes?!","Ambush","Ambush может появляться чаще.",5,"ambush"],
+["I Love Pancakes!!!","Ambush","Ambush атакует чаще.",10,"ambush"],
+["Back For Seconds","Ambush","Ambush атакует чаще.",10,"ambush"],
+["Afterimage","Ambush","Ambush перемещается быстрее.",10,"ambush"],
+["Roundabout","Halt","Halt меняет направление движения.",5,"halt"],
+["Watch Your Step","Опасности","Увеличивает количество опасных участков пола.",5,"hazard"],
+["Think Fast","Сущности","События требуют быстрее реагировать.",5,"entityrate"],
+["Think Faster","Сущности","События требуют ещё более быстрой реакции.",10,"entityrate"],
+["I'm Everywhere","Dupe","Dupe может появляться в большем количестве комнат.",10,"dupe"],
+["Bug Spray","Сущности","Влияет на появление небольших опасных сущностей.",5,"entityrate"],
+["It Can Run Too","Seek","Seek становится быстрее.",5,"seek"],
+["Bad Time: Rush","Rush","Увеличивает интенсивность атак Rush.",5,"rush"],
+["Destiny Still Arrives","Dread","Dread появляется раньше.",10,"dread"],
+["Run From It","Dread","Dread может появляться раньше.",5,"dread"],
+["A Few Places To Hide","Укрытия","Укрытия не гарантированы для всех.",5,"hide"],
+["El Goblino's Payday (Classic)","Золото","Золото не появляется.",15,"gold"],
+["Survive the Drakobloxxers","Особые","Особый режим/модификатор; награды могут быть отключены.",-999,"special"],
+["Survive the Jeff the Killer","Особые","Особый режим/модификатор; награды могут быть отключены.",-999,"special"]
+
+,["A-90, Here I Come","The Rooms","A-90 может появляться чаще.",10,"roomsentity"]
+,["A-120, Here I Come","The Rooms","A-120 может появляться чаще.",10,"roomsentity"]
+,["A-60, Here I Come","The Rooms","A-60 может появляться чаще.",10,"roomsentity"]
+,["More Ambush","Ambush","Увеличивает вероятность появления Ambush.",5,"ambush"]
+,["Even More Ambush","Ambush","Заметно увеличивает вероятность появления Ambush.",10,"ambush"]
+,["Less Hiding","Укрытия","Укрытия встречаются реже.",10,"hide"]
+,["No Hiding","Укрытия","Укрытия практически недоступны; испытание становится крайне опасным.",20,"hide"]
+,["More Dupe","Dupe","Увеличивает вероятность появления Dupe.",5,"dupe"]
+,["Dupe Everywhere","Dupe","Dupe может появляться намного чаще.",15,"dupe"]
+,["More Eyes","Eyes","Повышает вероятность появления Eyes.",5,"eyes"]
+,["Eyes Everywhere","Eyes","Eyes может появляться значительно чаще.",15,"eyes"]
+,["Seek And Destroy","Seek","Seek становится опаснее во время погони.",10,"seek"]
+,["Faster Seek","Seek","Погоня Seek проходит быстрее.",5,"seek"]
+,["Longer Chase","Seek","Погоня Seek длится дольше.",5,"seek"]
+,["More Rush","Rush","Повышает вероятность появления Rush.",5,"rush"]
+,["More Halt","Halt","Повышает вероятность появления Halt.",5,"halt"]
+,["More Screech","Сущности","Screech появляется чаще в тёмных комнатах.",5,"entityrate"]
+,["More Snare","Опасности","Snare появляется чаще.",5,"hazard"]
+,["Snare Trouble","Опасности","Опасные ловушки встречаются чаще.",10,"hazard"]
+,["Darkness Falls","Освещение","Тёмные комнаты встречаются чаще.",10,"lighting"]
+,["Extra Dark","Освещение","Значительно увеличивает количество тёмных комнат.",15,"lighting"]
+,["Less Gold","Золото","Снижает количество найденного золота.",5,"gold"]
+,["No Gold","Золото","Золота почти невозможно найти.",15,"gold"]
+,["More Batteries","Предметы","Батарейки встречаются чаще.",-5,"items"]
+,["Fewer Batteries","Предметы","Батарейки встречаются реже.",5,"items"]
+,["More Lockpicks","Предметы","Отмычки встречаются чаще.",-5,"items"]
+,["Fewer Lockpicks","Предметы","Отмычки встречаются реже.",5,"items"]
+,["More Vitamins","Предметы","Витамины встречаются чаще.",-5,"items"]
+,["Fewer Vitamins","Предметы","Витамины встречаются реже.",5,"items"]
+,["More Lighters","Предметы","Зажигалки встречаются чаще.",-5,"items"]
+,["Fewer Lighters","Предметы","Зажигалки встречаются реже.",5,"items"]
+,["More Flashlights","Предметы","Фонарики встречаются чаще.",-5,"items"]
+,["Fewer Flashlights","Предметы","Фонарики встречаются реже.",5,"items"]
+,["More Crucifixes","Предметы","Кресты встречаются чаще.",-10,"items"]
+,["Fewer Crucifixes","Предметы","Кресты встречаются реже.",5,"items"]
+,["No Guidance","Guiding Light","Подсказки Guiding Light сведены к минимуму.",10,"guiding"]
+,["Dim Guidance","Guiding Light","Подсказки Guiding Light менее заметны.",5,"guiding"]
+,["Faster Entities","Сущности","Некоторые сущности двигаются быстрее.",10,"entityrate"]
+,["Quiet Entities","Звук","Звуковые подсказки сущностей менее заметны.",10,"audio"]
+,["No Sound","Звук","Звуковые предупреждения сильно ограничены.",15,"audio"]
+,["Low Health Start","Здоровье","Начинаешь забег с малым запасом здоровья.",10,"health"]
+,["Fast Feet","Скорость","Передвижение ускорено.",-10,"speed"]
+,["Slow Feet","Скорость","Передвижение замедлено.",10,"speed"]
+,["Extra Locked Doors","Запертые комнаты","Чаще попадаются запертые двери.",5,"locked"]
+,["Key Hunt","Запертые комнаты","Чаще приходится искать ключи.",10,"locked"]
+,["More Rooms, More Trouble","Комнаты","Комнаты содержат больше потенциальных опасностей.",10,"rooms"]
+,["Unexpected Guests","Сущности","Опасные встречи происходят чаще.",10,"entityrate"]
+,["Flickering Lights","Освещение","Освещение чаще мигает.",5,"lighting"]
+,["Quick Decisions","Сущности","На реакцию во время опасных событий остаётся меньше времени.",10,"entityrate"]
+,["Extra Long Run","Комнаты","Испытание становится длиннее и утомительнее.",10,"rooms"]
+,["Bad Luck","Случайные","Случайные неблагоприятные условия могут осложнить забег.",10,"random"]
+,["Unlucky Day","Случайные","Несколько неблагоприятных эффектов усиливают испытание.",15,"random"]
+,["Extra Challenge","Особые","Дополнительное фанатское испытание для разнообразия забега.",5,"special"]
+,["Nightmare Mode","Особые","Фанатский модификатор, сильно усложняющий прохождение.",20,"special"]
+,["Maximum Pressure","Особые","Фанатский вариант с несколькими неблагоприятными условиями.",25,"special"]
+];
+const groups = {
+lighting:["Electrical Work","Bad Electrical Work","Power Shortage","Lights Out"],
+items:["More Stuff","Less Stuff","Out Of Stuff","Wear And Tear","Small Hands","Baby Hands"],
+gold:["El Goblino Was Here","El Goblino's Payday","El Goblino's Payday (Classic)"],
+health:["Tripped","Tripped And Fell","Last Few Breaths","Last Breath"],
+speed:["Didn't Skip Leg Day","Faster, Faster, Faster","MAXIMUM OVERDRIVE","My Knees Are Killing Me","My Legs Are Killing Me"],
+entityrate:["Good Time","Bad Time","Really Bad Time","Worst Time Ever"],
+eyes:["Nosey","Always Watching","Seeing Double","Four Eyes","Every Angle"],
+dupe:["Wrong Number","Battle Of Wits","I'm Everywhere"],
+random:["Uh Oh","How Unfortunate","Chaos, Chaos"]
+};
+const $=id=>document.getElementById(id);
+function pct(v){if(v<=-900)return "Награды выкл.";return (v>0?"+":"")+v+"%"}
+function card(m){return `<article class="mod"><div class="modtop"><strong>${m[0]}</strong><span class="pct ${m[3]<0?'negative':''}">${pct(m[3])}</span></div><p>${m[2]}</p><div class="tag">${m[1]}</div></article>`}
+function renderCatalog(){let q=$("search").value.toLowerCase(),c=$("category").value;let list=data.filter(m=>(!c||m[1]===c)&&(!q||(m[0]+" "+m[1]+" "+m[2]).toLowerCase().includes(q)));$("catalog").innerHTML=list.map(card).join("")||"<p>Ничего не найдено.</p>"}
+[...new Set(data.map(m=>m[1]))].sort().forEach(c=>{let o=document.createElement("option");o.value=c;o.textContent=c;$("category").appendChild(o)});
+$("search").addEventListener("input",renderCatalog);$("category").addEventListener("change",renderCatalog);
+function spin(){
+ const count=Number($("count").value);let pool=[...data];let chosen=[];let usedGroups=new Set();
+ // Random-modifier cards stand alone; avoid choosing multiple from the same mutually exclusive group.
+ while(chosen.length<count&&pool.length){
+   const i=Math.floor(Math.random()*pool.length),m=pool.splice(i,1)[0];
+   if(m[3]<=-900) continue;
+   let g=Object.keys(groups).find(k=>groups[k].includes(m[0]));
+   if(g&&usedGroups.has(g))continue;
+   if(g)usedGroups.add(g);
+   chosen.push(m);
+ }
+ let sum=chosen.reduce((s,m)=>s+m[3],0);
+ // Game's modifier bonus has a +150% cap and a -90% lower limit.
+ let total=Math.max(-90,Math.min(150,sum));
+ let base=Math.max(0,Number($("base").value)||0);
+ $("results").innerHTML=chosen.map(card).join("");
+ $("totalMods").textContent=chosen.length;
+ $("totalPct").textContent=(total>0?"+":"")+total+"%";
+ $("totalPct").className=total<0?"penalty":"bonus";
+ $("totalKnobs").textContent=Math.max(0,Math.round(base*(1+total/100)));
+ $("status").textContent="Испытание готово. Сможешь пройти этот забег?";
+ $("again").disabled=false;
+}
+$("spin").addEventListener("click",spin);$("again").addEventListener("click",spin);renderCatalog();
+</script>
+</body></html>
